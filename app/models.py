@@ -50,8 +50,8 @@ class Content(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     content_type: Mapped[ContentType]
 
-    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
-    parent_id: Mapped[int] = mapped_column(ForeignKey('contents.id'), nullable=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), index=True)
+    parent_id: Mapped[int] = mapped_column(ForeignKey('contents.id'), nullable=True, index=True)
 
     likes: Mapped[list["Like"]] = relationship('Like', back_populates='content')
     user: Mapped["User"] = relationship('User', back_populates='contents')
