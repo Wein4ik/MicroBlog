@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 
 
 with Session(engine) as session:
-    user = User(username='Yulsin')
-    session.add(user)
+    like1 = Like(user_id=1, content_id=2)
+    like2 = Like(user_id=2, content_id=1)
+    session.add_all([like1, like2])
     session.commit()

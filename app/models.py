@@ -2,7 +2,7 @@ import enum
 
 from datetime import datetime
 
-from sqlalchemy import ForeignKey, String, func, Integer, DateTime
+from sqlalchemy import ForeignKey, String, func, Integer, DateTime, UniqueConstraint
 from sqlalchemy.orm import (
     DeclarativeBase,
     Mapped,
@@ -22,10 +22,13 @@ class ContentType(enum.Enum):
 
 class Like(Base):
     __tablename__ = "likes"
+    __table_args__ = (
+        UniqueConstraint('user_id', 'content_id', name='unique_user_content_like'),
+    )
 
     id = mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    content_id: Mapped[int] = mapped_column(ForeignKey("contents.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    content_id: Mapped[int] = mapped_column(ForeignKey("contents.id"), nullable=False)
 
     user: Mapped["User"] = relationship("User", back_populates="likes")
     content: Mapped["Content"] = relationship("Content", back_populates="likes")
