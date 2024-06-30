@@ -1,5 +1,5 @@
+from app.exceptions import UserAlreadyExistsException
 from db import engine
-from models import *
 from repository.sqlalchemy_repository import SQLAlchemyUserRepository
 from repository.unit_of_work import UnitOfWork
 
@@ -24,10 +24,12 @@ user_repository = SQLAlchemyUserRepository(session=Session(engine))
 
 
 # user_repository.update(3, )
+try:
+    with UnitOfWork() as unit_of_work:
+        repo = SQLAlchemyUserRepository(unit_of_work.session)
 
-with UnitOfWork() as unit_of_work:
-    repo = SQLAlchemyUserRepository(unit_of_work.session)
-    # repo.add(username='Крутой чел ебать')
-
-    delete_user = repo.get_by_username(username='Крутой чел ебать')
-    repo.delete(delete_user.id)
+        user = repo.add(username='Xrust1k')
+        unit_of_work.commit()
+        print(user.dict())
+except UserAlreadyExistsException as e:
+    print(e.message)

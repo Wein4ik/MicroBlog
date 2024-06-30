@@ -44,6 +44,13 @@ class User(Base):
     contents: Mapped[list["Content"]] = relationship('Content', back_populates='user')
     likes: Mapped[list["Like"]] = relationship('Like', back_populates='user')
 
+    def dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'created_at': self.created_at
+        }
+
 
 class Content(Base):
     __tablename__ = "contents"

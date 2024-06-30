@@ -24,5 +24,5 @@ class UserRepository(ABC):
         pass
 
     @abstractmethod
-    def delete(self, user_id):
+    def delete(self, user_id: int):
         pass
