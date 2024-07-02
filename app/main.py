@@ -1,4 +1,4 @@
-from app.exceptions import UserAlreadyExistsException
+from app.exceptions import UserAlreadyExistsException, UserNotFoundException
 from db import engine
 from repository.sqlalchemy_repository import SQLAlchemyUserRepository
 from repository.unit_of_work import UnitOfWork
@@ -27,9 +27,11 @@ user_repository = SQLAlchemyUserRepository(session=Session(engine))
 try:
     with UnitOfWork() as unit_of_work:
         repo = SQLAlchemyUserRepository(unit_of_work.session)
+        likes = repo.get_likes(2)
+        for like in likes:
+            print(like.dict())
 
-        user = repo.add(username='Xrust1k')
-        unit_of_work.commit()
-        print(user.dict())
 except UserAlreadyExistsException as e:
+    print(e.message)
+except UserNotFoundException as e:
     print(e.message)

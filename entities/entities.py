@@ -1,5 +1,5 @@
 class UserEntity:
-    def __init__(self, id, username, created_at, user):
+    def __init__(self, id, username, created_at, user=None):
         self._id = id
         self.username = username
         self._created_at = created_at
@@ -18,4 +18,41 @@ class UserEntity:
             'id': self.id,
             'username': self.username,
             'created_at': self.created_at
+        }
+
+
+class LikeEntity:
+    def __init__(self, id, user_id, content_id, like=None):
+        self.id = id
+        self.user_id = user_id
+        self.content_id = content_id
+        self._like = like
+
+    def dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'content_id': self.content_id
+        }
+
+
+class ContentEntity:
+    def __init__(self, id, content, created_at,
+                 content_type, user_id, parent_id, cont=None):
+        self.id = id
+        self.content = content
+        self.created_at = created_at
+        self.content_type = content_type
+        self.user_id = user_id
+        self.parent_id = parent_id
+        self._cont = cont
+
+    def dict(self):
+        return {
+            'id': self.id,
+            'content': self.content,
+            'created_at': self.created_at,
+            'content_type': self.content_type,
+            'user_id': self.user_id,
+            'parent_id': self.parent_id
         }

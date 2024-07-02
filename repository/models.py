@@ -33,6 +33,13 @@ class Like(Base):
     user: Mapped["User"] = relationship("User", back_populates="likes")
     content: Mapped["Content"] = relationship("Content", back_populates="likes")
 
+    def dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'content_id': self.content_id
+        }
+
 
 class User(Base):
     __tablename__ = "users"
@@ -67,3 +74,13 @@ class Content(Base):
     user: Mapped["User"] = relationship('User', back_populates='contents')
     comments: Mapped[list["Content"]] = relationship("Content", back_populates="parent")
     parent: Mapped["Content"] = relationship("Content", back_populates="comments", remote_side=[id])
+
+    def dict(self):
+        return {
+            'id': self.id,
+            'content': self.content,
+            'created_at': self.created_at,
+            'content_type': self.content_type,
+            'user_id': self.user_id,
+            'parent_id': self.parent_id
+        }
