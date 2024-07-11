@@ -1,11 +1,9 @@
 from app.exceptions import UserAlreadyExistsException, UserNotFoundException
 from db import engine
-from repository.sqlalchemy_repository import SQLAlchemyUserRepository
+from repository.sqlalchemy_repository import *
 from repository.unit_of_work import UnitOfWork
 
 from sqlalchemy.orm import Session
-
-user_repository = SQLAlchemyUserRepository(session=Session(engine))
 
 # users = user_repository.users_list(id=1, username='Yulsin')
 #
@@ -24,14 +22,35 @@ user_repository = SQLAlchemyUserRepository(session=Session(engine))
 
 
 # user_repository.update(3, )
-try:
-    with UnitOfWork() as unit_of_work:
-        repo = SQLAlchemyUserRepository(unit_of_work.session)
-        likes = repo.get_likes(2)
-        for like in likes:
-            print(like.dict())
+# try:
+#     with UnitOfWork() as unit_of_work:
+#         repo = SQLAlchemyUserRepository(unit_of_work.session)
+#         likes = repo.get_likes(2)
+#         for like in likes:
+#             print(like.dict())
+#
+# except UserAlreadyExistsException as e:
+#     print(e.message)
+# except UserNotFoundException as e:
+#     print(e.message)
 
-except UserAlreadyExistsException as e:
-    print(e.message)
-except UserNotFoundException as e:
-    print(e.message)
+# with UnitOfWork() as unit_of_work:
+#     content_repo = SQLAlchemyContentRepository(unit_of_work.session)
+#     content = content_repo.add(
+#         text='Здравствуй, Васька',
+#         content_type=ContentType.COMMENT,
+#         user_id=1,
+#         #parent_id=2
+#     )
+#
+#     #content_repo.delete(1)
+#
+#
+#     unit_of_work.commit()
+
+with UnitOfWork() as unit_of_work:
+    repo = SQLAlchemyLikeRepository(unit_of_work.session)
+
+    repo.add(1, 2)
+
+    unit_of_work.commit()

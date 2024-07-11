@@ -70,9 +70,10 @@ class Content(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), index=True)
     parent_id: Mapped[int] = mapped_column(ForeignKey('contents.id'), nullable=True, index=True)
 
-    likes: Mapped[list["Like"]] = relationship('Like', back_populates='content')
+    likes: Mapped[list["Like"]] = relationship('Like', back_populates='content', cascade="all, delete")
     user: Mapped["User"] = relationship('User', back_populates='contents')
-    comments: Mapped[list["Content"]] = relationship("Content", back_populates="parent")
+    comments: Mapped[list["Content"]] = relationship("Content", back_populates="parent", cascade="all, delete")
+    #children = relationship("Content", back_populates="parent", cascade="all, delete")
     parent: Mapped["Content"] = relationship("Content", back_populates="comments", remote_side=[id])
 
     def dict(self):

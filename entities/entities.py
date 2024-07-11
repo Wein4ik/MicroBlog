@@ -23,10 +23,14 @@ class UserEntity:
 
 class LikeEntity:
     def __init__(self, id, user_id, content_id, like=None):
-        self.id = id
+        self._id = id
         self.user_id = user_id
         self.content_id = content_id
         self._like = like
+
+    @property
+    def id(self):
+        return self._id or self._like.id
 
     def dict(self):
         return {
@@ -38,14 +42,22 @@ class LikeEntity:
 
 class ContentEntity:
     def __init__(self, id, content, created_at,
-                 content_type, user_id, parent_id, cont=None):
-        self.id = id
+                 content_type, user_id, parent_id, _content=None):
+        self._id = id
         self.content = content
-        self.created_at = created_at
+        self._created_at = created_at
         self.content_type = content_type
         self.user_id = user_id
         self.parent_id = parent_id
-        self._cont = cont
+        self._content = _content
+
+    @property
+    def id(self):
+        return self._id or self._content.id
+
+    @property
+    def created_at(self):
+        return self._created_at or self._content.created_at
 
     def dict(self):
         return {
