@@ -37,7 +37,7 @@ class UserRepository(ABC):
 class ContentRepository(ABC):
 
     @abstractmethod
-    def add(self, text: str, content_type: ContentType, user_id, parent_id: int = None):
+    def add(self, content: str, content_type: ContentType, user_id, parent_id: int = None):
         pass
 
     @abstractmethod

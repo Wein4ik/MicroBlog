@@ -72,15 +72,15 @@ class SQLAlchemyContentRepository(ContentRepository):
     def __init__(self, session: Session):
         self.session = session
 
-    def add(self, text: str, content_type: ContentType, user_id: int, parent_id: int = None):
-        content = Content(
-            content=text,
+    def add(self, content: str, content_type: ContentType, user_id: int, parent_id: int = None):
+        _content = Content(
+            content=content,
             content_type=content_type,
             user_id=user_id,
             parent_id=parent_id
         )
-        self.session.add(content)
-        return ContentEntity(**content.dict(), _content=content)
+        self.session.add(_content)
+        return ContentEntity(**_content.dict(), _content=_content)
 
     def _get_by_id(self, content_id: int):
         content = self.session.query(Content).filter_by(id=content_id).first()
