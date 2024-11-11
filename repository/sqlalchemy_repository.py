@@ -49,6 +49,9 @@ class SQLAlchemyUserRepository(UserRepository):
 
         return UserEntity(**user.dict(), user=user)
 
+    def is_user_existing(self, user_id):
+        return self.session.query(User).filter_by(id=user_id).first() is not None
+
     def delete(self, user_id):
         user = self._get_by_id(user_id)
         if not user:
@@ -73,12 +76,18 @@ class SQLAlchemyContentRepository(ContentRepository):
         self.session = session
 
     def add(self, content: str, content_type: ContentType, user_id: int, parent_id: int = None):
+        with UnitOfWork() as unit_of_work:
+            user_repo = SQLAlchemyUserRepository(unit_of_work.session)
+            if not user_repo.is_user_existing(user_id):
+                raise UserNotFoundException(f"User with id {user_id} not found")
+
         _content = Content(
             content=content,
             content_type=content_type,
             user_id=user_id,
             parent_id=parent_id
         )
+
         self.session.add(_content)
         return ContentEntity(**_content.dict(), _content=_content)
 

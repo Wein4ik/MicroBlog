@@ -33,6 +33,10 @@ class UserRepository(ABC):
     def get_likes(self, user_id):
         pass
 
+    @abstractmethod
+    def is_user_existing(self, user_id):
+        pass
+
 
 class ContentRepository(ABC):
 

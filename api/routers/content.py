@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
 from api.schemas import GetContentSchema, CreateContentSchema
-from app.exceptions import ContentNotFoundException
+from app.exceptions import ContentNotFoundException, UserNotFoundException
 from repository.sqlalchemy_repository import SQLAlchemyContentRepository
 from repository.unit_of_work import UnitOfWork
 from starlette import status
@@ -33,6 +33,9 @@ def create_content(payload: CreateContentSchema):
             content = repo.add(**payload.dict())
             unit_of_work.commit()
             return content.dict()
+    except UserNotFoundException as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="Server error")
