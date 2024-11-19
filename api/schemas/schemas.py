@@ -19,3 +19,12 @@ class CreateContentSchema(BaseModel):
 class GetContentSchema(CreateContentSchema):
     id: int
     created_at: datetime
+
+
+class CreateUserSchema(BaseModel):
+    username: str
+
+
+class GetUserSchema(CreateUserSchema):
+    id: int
+    created_at: datetime

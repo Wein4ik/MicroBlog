@@ -1,9 +1,12 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Body
 from starlette import status
+from pydantic import BaseModel
 
 from core.exceptions import UserAlreadyExistsException
 from repository.sqlalchemy_repository import SQLAlchemyUserRepository
 from repository.unit_of_work import UnitOfWork
+
+from api.schemas.schemas import CreateUserSchema, GetUserSchema
 
 router = APIRouter(
     prefix="/user",
@@ -12,12 +15,13 @@ router = APIRouter(
 
 
 @router.post('/create',
-             status_code=status.HTTP_201_CREATED)
-def add_user(username: str):
+             status_code=status.HTTP_201_CREATED,
+             response_model=GetUserSchema)
+def add_user(user: CreateUserSchema):
     try:
         with UnitOfWork() as unit_of_work:
             repo = SQLAlchemyUserRepository(unit_of_work.session)
-            user = repo.add(username)
+            user = repo.add(user.username)
             unit_of_work.commit()
             return user.dict()
     except UserAlreadyExistsException as e:
