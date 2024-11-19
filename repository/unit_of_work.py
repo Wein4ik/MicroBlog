@@ -1,5 +1,5 @@
 from sqlalchemy.orm import sessionmaker
-from app.db import engine
+from repository.db import engine
 
 
 class UnitOfWork:

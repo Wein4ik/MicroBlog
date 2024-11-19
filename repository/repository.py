@@ -56,6 +56,10 @@ class ContentRepository(ABC):
     def delete(self, content_id):
         pass
 
+    @abstractmethod
+    def is_content_existing(self, content_id):
+        pass
+
 
 class LikeRepository(ABC):
 

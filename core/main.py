@@ -1,9 +1,5 @@
-from app.exceptions import UserAlreadyExistsException, UserNotFoundException
-from db import engine
 from repository.sqlalchemy_repository import *
 from repository.unit_of_work import UnitOfWork
-
-from sqlalchemy.orm import Session
 
 # users = user_repository.users_list(id=1, username='Yulsin')
 #

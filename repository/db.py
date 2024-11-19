@@ -1,4 +1,4 @@
-from app.config import DB_URL
+from core.config import DB_URL
 
 from sqlalchemy import create_engine
 from sqlalchemy import event

@@ -1,9 +1,9 @@
-from app.exceptions import *
+from core.exceptions import *
 from repository.repository import UserRepository, ContentRepository, LikeRepository
 from repository.models import *
-from entities.entities import *
+from repository.entities.entities import *
 
-from sqlalchemy.orm import Session, aliased
+from sqlalchemy.orm import Session
 
 from repository.unit_of_work import UnitOfWork
 
@@ -18,7 +18,7 @@ class SQLAlchemyUserRepository(UserRepository):
 
     def add(self, username):
         if self._user_exist(username=username):
-            raise UserAlreadyExistsException(message='Пользователь с таким username уже существует')
+            raise UserAlreadyExistsException(message=f'User with username {username} is already exist')
         user = User(username=username)
         self.session.add(user)
         return UserEntity(**user.dict(), user=user)
@@ -81,6 +81,9 @@ class SQLAlchemyContentRepository(ContentRepository):
             if not user_repo.is_user_existing(user_id):
                 raise UserNotFoundException(f"User with id {user_id} not found")
 
+        if parent_id is not None and not self.is_content_existing(parent_id):
+            raise ContentNotFoundException(f"Parent with id {parent_id} not found")
+
         _content = Content(
             content=content,
             content_type=content_type,
@@ -118,6 +121,9 @@ class SQLAlchemyContentRepository(ContentRepository):
             raise ContentNotFoundException()
 
         self.session.delete(delete_content)
+
+    def is_content_existing(self, content_id):
+        return self.session.query(Content).filter_by(id=content_id).first() is not None
 
 
 class SQLAlchemyLikeRepository(LikeRepository):
