@@ -13,7 +13,7 @@ class UserEntity:
     def created_at(self):
         return self._created_at or self._user.created_at
 
-    def dict(self):
+    def model_dump(self):
         return {
             'id': self.id,
             'username': self.username,
@@ -32,7 +32,7 @@ class LikeEntity:
     def id(self):
         return self._id or self._like.id
 
-    def dict(self):
+    def model_dump(self):
         return {
             'id': self.id,
             'user_id': self.user_id,
@@ -59,7 +59,7 @@ class ContentEntity:
     def created_at(self):
         return self._created_at or self._content.created_at
 
-    def dict(self):
+    def model_dump(self):
         return {
             'id': self.id,
             'content': self.content,

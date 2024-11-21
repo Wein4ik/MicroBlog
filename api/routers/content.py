@@ -18,7 +18,7 @@ def get_content(content_id: int):
         with UnitOfWork() as unit_of_work:
             repo = SQLAlchemyContentRepository(unit_of_work.session)
             content = repo.get_content(content_id)
-        return content.dict()
+        return content.model_dump()
     except ContentNotFoundException as e:
         raise HTTPException(status_code=404, detail=f"Content with ID {content_id} not found")
 
@@ -32,7 +32,7 @@ def create_content(payload: CreateContentSchema):
             repo = SQLAlchemyContentRepository(unit_of_work.session)
             content = repo.add(**payload.dict())
             unit_of_work.commit()
-            return content.dict()
+            return content.model_dump()
 
     except UserNotFoundException as e:
         raise HTTPException(status_code=404, detail=str(e))
