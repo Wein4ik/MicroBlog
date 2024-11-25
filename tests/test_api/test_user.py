@@ -79,4 +79,19 @@ def test_add_user_invalid_type(test_client):
     # Act
     response = test_client.post("/user/create", json={"username": 1})
 
+    # Assert
+    assert response.status_code == 422
+
+
+def test_add_user_invalid_length_username(test_client):
+    """
+   Test API behavior when invalid length of username:
+   - Empty username
+   - Username exceeding maximum length
+   """
+
+    response = test_client.post("/user/create", json={"username": ""})
+    assert response.status_code == 422
+
+    response = test_client.post("/user/create", json={"username": "a" * 100})
     assert response.status_code == 422
