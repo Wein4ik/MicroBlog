@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Path
+from typing import Annotated
 
 from api.schemas.schemas import GetContentSchema, CreateContentSchema
 from core.exceptions import ContentNotFoundException, UserNotFoundException
@@ -13,7 +14,12 @@ router = APIRouter(
 
 
 @router.get('/{content_id}', response_model=GetContentSchema)
-def get_content(content_id: int):
+def get_content(
+        content_id: Annotated[int, Path(
+            title="The ID of the item to get",
+            ge=1,
+            description="ID must be a positive integer greater than or equal to 1."
+        )]):
     try:
         with UnitOfWork() as unit_of_work:
             repo = SQLAlchemyContentRepository(unit_of_work.session)

@@ -10,6 +10,8 @@ from sqlalchemy.orm import (
     relationship,
 )
 
+from config import USERNAME_MAX_LENGTH_DEFAULT
+
 
 class Base(DeclarativeBase):
     pass
@@ -45,7 +47,7 @@ class User(Base):
     __tablename__ = "users"
 
     id = mapped_column(Integer, primary_key=True)
-    username: Mapped[str] = mapped_column(String(20), index=True, unique=True)
+    username: Mapped[str] = mapped_column(String(USERNAME_MAX_LENGTH_DEFAULT), index=True, unique=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     contents: Mapped[list["Content"]] = relationship('Content', back_populates='user')

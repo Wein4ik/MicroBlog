@@ -1,6 +1,8 @@
 from enum import Enum
 from datetime import datetime
 from pydantic import BaseModel, field_validator
+
+from config import USERNAME_MAX_LENGTH_DEFAULT
 from repository.models import ContentType
 
 
@@ -30,7 +32,7 @@ class CreateUserSchema(BaseModel):
         v = v.strip()  # Удаляем пробелы с начала и конца
         if not v:
             raise ValueError('Username cannot be empty or contain only spaces')
-        if len(v) > 20:
+        if len(v) > USERNAME_MAX_LENGTH_DEFAULT:
             raise ValueError('Username must not exceed 20 characters')
         return v.lower()
 
