@@ -1,26 +1,8 @@
-from enum import Enum
 from datetime import datetime
+
 from pydantic import BaseModel, field_validator
 
 from config import USERNAME_MAX_LENGTH_DEFAULT
-from repository.models import ContentType
-
-
-# class ContentType(Enum):
-#     POST = 'post'
-#     COMMENT = 'comment'
-
-
-class CreateContentSchema(BaseModel):
-    content: str
-    content_type: ContentType
-    user_id: int
-    parent_id: int | None = None
-
-
-class GetContentSchema(CreateContentSchema):
-    id: int
-    created_at: datetime
 
 
 class CreateUserSchema(BaseModel):

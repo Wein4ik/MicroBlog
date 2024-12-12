@@ -60,6 +60,13 @@ class ContentRepository(ABC):
     def is_content_existing(self, content_id):
         pass
 
+    @abstractmethod
+    def change_text(self, content_id, new_content):
+        pass
+
+    @abstractmethod
+    def delete_content(self, content_id):
+        pass
 
 class LikeRepository(ABC):
 

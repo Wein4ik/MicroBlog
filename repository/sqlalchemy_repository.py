@@ -125,6 +125,22 @@ class SQLAlchemyContentRepository(ContentRepository):
     def is_content_existing(self, content_id):
         return self.session.query(Content).filter_by(id=content_id).first() is not None
 
+    def change_text(self, content_id, new_content):
+        content = self._get_by_id(content_id)
+        if content is None:
+            raise ContentNotFoundException()
+
+        content.content = new_content
+
+        return ContentEntity(**content.dict(), _content=content)
+
+    def delete_content(self, content_id):
+        content = self._get_by_id(content_id)
+        if content is None:
+            raise ContentNotFoundException()
+
+        self.session.delete(content)
+
 
 class SQLAlchemyLikeRepository(LikeRepository):
 

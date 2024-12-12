@@ -2,11 +2,11 @@ from fastapi import APIRouter, HTTPException, Body
 from starlette import status
 from pydantic import BaseModel
 
+from api.schemas.user_schemas import GetUserSchema, CreateUserSchema
 from core.exceptions import UserAlreadyExistsException
 from repository.sqlalchemy_repository import SQLAlchemyUserRepository
 from repository.unit_of_work import UnitOfWork
 
-from api.schemas.schemas import CreateUserSchema, GetUserSchema
 
 router = APIRouter(
     prefix="/user",
